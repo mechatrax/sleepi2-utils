@@ -1,0 +1,84 @@
+#!/bin/sh
+
+#
+# alarm control script for sleepi2
+# 
+
+ENV_FILE=/etc/default/sleepi2
+
+if [ -r $ENV_FILE ]
+then
+    . $ENV_FILE
+fi
+
+VERSION="1.0"
+
+GET_USAGE="
+  --get, -g             get alarm time
+"
+SET_USAGE="
+  --set, -s <STRING>    set alarm time described by STRING
+"
+
+CLEAR_USAGE="
+  --clear, -c           clear alarm time
+"
+
+USAGE="
+Usage: sleepi2alarm [COMMAND]
+
+Commands:
+${GET_USAGE}${SET_USAGE}${CLEAR_USAGE}
+  --help, -h            display help and exit
+
+  --version, -v         display version and exit
+"
+
+ALARM_PATH="/sys/class/rtc/${RTC_DEVICE}/wakealarm"
+
+#
+# execute command
+#
+case $1 in
+-g|--get)
+    if [ ! -e $ALARM_PATH ]
+    then
+        echo "cannot access $ALARM_PATH" >&2
+        exit 1
+    fi
+    epoch=`cat $ALARM_PATH`
+    if [ $epoch ]
+    then
+        date -d @$epoch
+    fi
+    ;;
+-s|--set)
+    if [ ! -e $ALARM_PATH ]
+    then
+        echo "cannot access $ALARM_PATH" >&2
+        exit 1
+    fi
+    date +%s -d "$2" > $ALARM_PATH
+    ;;
+-c|--clear)
+    if [ ! -e $ALARM_PATH ]
+    then
+        echo "cannot access $ALARM_PATH" >&2
+        exit 1
+    fi
+    echo "" > $ALARM_PATH
+    ;;
+-v|--version)
+    echo "sleepi2alarm version $VERSION"
+    ;;
+*)
+    echo "$USAGE"
+    ;;
+esac
+
+if [ $? -ne 0 ]
+then
+    echo "error: command failure" >&2
+    exit 1
+fi
+

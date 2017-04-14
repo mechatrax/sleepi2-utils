@@ -1,0 +1,15 @@
+[Unit]
+Description=sleepi2-utils postprocess
+DefaultDependencies=no
+After=sleepi2-start.service
+Before=shutdown.target sleepi2-systohc.service
+Conflicts=sleepi2-monitor.service
+
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/default/sleepi2
+ExecStart=/usr/lib/sleepi2-utils/stop.sh
+TimeoutSec=30s
+
+[Install]
+WantedBy=poweroff.target

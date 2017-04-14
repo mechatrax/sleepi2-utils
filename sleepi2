@@ -1,0 +1,99 @@
+#
+# sleepi2 configuration
+#
+
+#
+# RTC device name
+#
+RTC_DEVICE=rtc0
+
+#
+# RTC synchronization at boot
+#
+# HCTOSYS=yes : enable the synchronization to system clock from rtc
+# HCTOSYS=no  : disable the synchronization to system clock from rtc
+#
+HCTOSYS=yes
+
+#
+# RTC synchronization at shutdown
+#
+# SYSTOHC=yes : enable the synchronization to rtc from system clock
+# SYSTOHC=no  : disable the synchronization to rtc from system clock
+#
+SYSTOHC=yes
+
+#
+# Power management module I2C address
+#
+# DIP1 / DIP2 = I2C address
+# OFF  / OFF  = 0x69
+# ON   / OFF  = 0x6A
+# OFF  / ON   = 0x6C
+# ON   / ON   = Disabled
+# 
+I2C_ADDRESS=0x69
+
+#
+# Heartbeat GPIO pin
+#
+# HEARTBEAT_PIN: 5(default) or 24
+#
+HEARTBEAT_PIN=5
+
+#
+# Reboot if the heartbeat is not received more than HEARTBEAT_TIMEOUT seconds
+#
+# HEARTBEAT_TIMEOUT=0 : disabled
+# HEARTBEAT_TIMEOUT=N : N[1..255] seconds
+#
+HEARTBEAT_TIMEOUT=20
+
+#
+# Retry on boot failure
+#
+# RETRY_BOOT=0 : do not retry on boot failure
+# RETRY_BOOT=1 : retry on boot failure
+#
+RETRY_BOOT=1
+
+#
+# Time to power off after shutdown
+#
+# SHUTDOWN_DELAY=0 : disabled
+# SHUTDOWN_DELAY=N : N[1..255] seconds
+#
+SHUTDOWN_DELAY=10
+
+#
+# Time to wait for boot
+#
+# WAKEUP_DELAY=0 : disabled
+# WAKEUP_DELAY=N : N[1..255] seconds
+#
+WAKEUP_DELAY=40
+
+#
+# Forced shutdown by external input 
+#
+# EXTIN_FORCED_SHUTDOWN=0 : disabled
+# EXTIN_FORCED_SHUTDOWN=1 : external input has been detected 10s and shutdown
+#
+EXTIN_FORCED_SHUTDOWN=0
+
+#
+# External input trigger for wakeup
+#
+# EXTIN_LEVEL_TRIGGER=1 : level detection
+# EXTIN_LEVEL_TRIGGER=0 : edge detection
+#
+EXTIN_LEVEL_TRIGGER=0
+
+#
+# RI trigger for wakeup
+#
+# RI_LEVEL_TRIGGER=1 : level detection
+# RI_LEVEL_TRIGGER=0 : edge detection
+#
+RI_LEVEL_TRIGGER=0
+
