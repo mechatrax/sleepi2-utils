@@ -1,0 +1,227 @@
+#!/usr/bin/env python3
+
+import sys
+import configparser
+import sleepi
+
+
+PROGRAM_VERSION = '1.0'
+
+ENVIRONMENT_FILE = '/etc/default/sleepi2'
+
+DEFAULT_I2C_ADDRESS = '0x69'
+DEFAULT_I2C_BUS = '1'
+
+USAGE = """
+Usage: sleepi2ctl COMMAND [OPTION...]
+
+Commands:
+    --get, -g PARAMETER          get sleepi2 parameter
+    
+    --set, -s PARAMETER <VALUE>  set sleepi2 parameter
+    
+    --help, -h                   display help and exit
+    
+    --version, -v                display version and exit
+"""[:-1]
+
+GET_USAGE = """
+Get Command Usage:
+    sleepi2ctl --get PARAMETER
+
+Get Command Parameters:
+"""[:-1]
+
+GET_PARAMETERS = {
+    'extin-count': '               seconds that the external input is detected',
+    'extin-powerdown': '           external input power down enable flag',
+    'extin-trigger': '             external input trigger flag',
+    'extout': '                    external output state',
+    'restart': '                   auto restart flag',
+    'ri-trigger': '                ring indicator trigger flag',
+    'sleep': '                     sleep mode flag',
+    'switch-count': '              seconds that the push switch is pressed',
+    'timeout': '                   seconds of watchdog timeout',
+    'voltage': '                   power supply voltage',
+    'wakeup-delay': '              seconds of watchdog wakeup delay time',
+    'wakeup-flag': '               wakeup status flag',
+    'wakeup-status': '             wakeup status',
+}
+
+SET_USAGE = """
+Set Command Usage:
+    sleepi2ctl --set PARAMETER <VALUE>
+
+Set Command Parameters and Values:
+"""[:-1]
+
+SET_PARAMETERS = {
+    'extin-powerdown': '<0,1>      external input power down enable flag',
+    'extin-trigger': '<0,1>        external input trigger flag',
+    'extout': '<0,1>               external output state',
+    'restart': '<0,1>              auto restart flag',
+    'ri-trigger': '<0,1>           ring indicator trigger flag',
+    'sleep': '<0,1>                sleep mode flag',
+    'timeout': '<0..255>           seconds of watchdog timeout',
+    'wakeup-delay': '<0..255>      seconds of watchdog wakeup delay',
+}
+
+
+def print_flag(reg, flags):
+    mask = 0x01
+    
+    for flag in flags:
+        if mask & reg:
+            print(flag)
+        mask <<= 1
+
+
+def parse_environment(path):
+    parser = configparser.ConfigParser()
+    parser.read_dict({'DEFAULT': {
+        'I2C_ADDRESS': DEFAULT_I2C_ADDRESS,
+        'I2C_BUS': DEFAULT_I2C_BUS,
+    }})
+    
+    try:
+        with open(path, 'r') as file:
+            string = file.read()
+    except IOError as e:
+        print("Cannot access {}.".format(path))
+        exit(e)
+    
+    parser.read_string('[env]' + string)
+    env = parser['env']
+    
+    return env
+
+
+def help(command):
+    if command == 'get':
+        print(GET_USAGE)
+        for key, val in sorted(GET_PARAMETERS.items()):
+            print("    {} {}".format(key, val))
+    elif command == 'set':
+        print(SET_USAGE)
+        for key, val in sorted(SET_PARAMETERS.items()):
+            print("    {} {}".format(key, val))
+    else:
+        print(USAGE)
+        print(GET_USAGE)
+        for key, val in sorted(GET_PARAMETERS.items()):
+            print("    {} {}".format(key, val))
+        print(SET_USAGE)
+        for key, val in sorted(SET_PARAMETERS.items()):
+            print("    {} {}".format(key, val))
+
+
+def version():
+    print("sleepi2ctl version {}".format(PROGRAM_VERSION))
+
+
+def write(regs, alias, data):
+    try:
+        key = alias['name']
+        val = alias['property']
+        reg = regs[key]
+        if val == 'value':
+            reg.value = int(data)
+        else:
+            reg.flags[val] = int(data)
+    except IOError as e:
+        print("Cannot access device at address 0x{:02x}.".format(regs.device))
+        sys.exit(e)
+
+
+def read(regs, alias):
+    try:
+        key = alias['name']
+        val = alias['property']
+        reg = regs[key]
+        if val == 'value':
+            return reg.value
+        else:
+            return reg.flags[val]
+    except IOError as e:
+        print("Cannot access device at address 0x{:02x}.".format(regs.device))
+        sys.exit(e)
+
+
+def main(args):
+    aliases = {
+        'extin-count': { 'name': 'external_input_count', 'property': 'value' },
+        'extin-powerdown': { 'name': 'input_control', 'property': 'eipde' },
+        'extin-trigger': { 'name': 'input_control', 'property': 'eitrg' },
+        'extout': { 'name': 'output_control', 'property': 'eoe' },
+        'restart': { 'name': 'watchdog_control', 'property': 'rste' },
+        'ri-trigger': { 'name': 'input_control', 'property': 'ritrg' },
+        'sleep': { 'name': 'watchdog_control', 'property': 'slpe' },
+        'switch-count': { 'name': 'push_switch_count', 'property': 'value' },
+        'timeout': { 'name': 'watchdog_timeout', 'property': 'value' },
+        'voltage': { 'name': 'voltage', 'property': 'value' },
+        'wakeup-delay': { 'name': 'watchdog_wakeup_delay', 'property': 'value' },
+        'wakeup-status': { 'name': 'wakeup_status', 'property': 'value' },
+        'wakeup-flag': { 'name': 'wakeup_status', 'property': 'value' },
+    }
+    flags = {
+        'wakeup-flag': (
+            'poweron',
+            'watchdog',
+            'alarm',
+            'switch',
+            'extin',
+            'ri',
+        ),
+    }
+    env = parse_environment(ENVIRONMENT_FILE)
+    bus = int(env['I2C_BUS'])
+    addr = int(env['I2C_ADDRESS'], 16)
+    
+    try:
+        sleepi2 = sleepi.Sleepi2(bus, addr)
+    except IOError as e:
+        print("Cannot access i2c{}.".format(bus))
+        sys.exit(e)
+    
+    cmd = args[0]
+    params = args[1:]
+    
+    if cmd in ('-v', '--version'):
+        version()
+    elif cmd in ('-s', '--set'):
+        if len(params) < 2:
+            help('set')
+            sys.exit(2)
+        name = params[0]
+        val = params[1]
+        if name not in SET_PARAMETERS.keys():
+            help('set')
+            sys.exit(2)
+        alias = aliases[name]
+        write(sleepi2.registers, alias, val)
+    elif cmd in ('-g', '--get'):
+        if len(params) < 1:
+            help('get')
+            sys.exit(2)
+        name = params[0]
+        if name not in GET_PARAMETERS.keys():
+            help('get')
+            sys.exit(2)
+        alias = aliases[name]
+        val = read(sleepi2.registers, alias)
+        suffix = name.rsplit('-', 1)[-1]
+        if suffix == 'flag':
+            print_flag(val, flags[name])
+        else:
+            print(val)
+    else:
+        help('all')
+
+
+if __name__ == '__main__':
+    if not sys.argv[1:]:
+        help('all')
+        sys.exit(2)
+
+    main(sys.argv[1:])
+

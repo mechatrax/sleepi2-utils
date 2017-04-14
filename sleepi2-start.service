@@ -1,0 +1,14 @@
+[Unit]
+Description=sleepi2-utils preprocess
+DefaultDependencies=no
+After=sysinit.target
+Before=shutdown.target
+
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/default/sleepi2
+ExecStart=/usr/lib/sleepi2-utils/start.sh
+TimeoutSec=30s
+
+[Install]
+WantedBy=sysinit.target

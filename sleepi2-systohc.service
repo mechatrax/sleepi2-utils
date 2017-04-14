@@ -1,0 +1,17 @@
+[Unit]
+Description=Synchronise system clock to sleepi2
+DefaultDependencies=no
+Requires=dev-rtc.device
+After=sleepi2-hctosys.service
+Before=shutdown.target
+Conflicts=sleepi2-monitor.service
+
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/default/sleepi2
+ExecStart=/usr/lib/sleepi2-utils/systohc.sh
+TimeoutSec=30s
+KillSignal=SIGKILL
+
+[Install]
+WantedBy=shutdown.target
