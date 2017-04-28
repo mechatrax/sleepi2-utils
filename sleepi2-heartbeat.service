@@ -1,14 +1,12 @@
 [Unit]
-Description=sleepi2 gpio heartbeat
+Description=sleepi2 software heartbeat
 DefaultDependencies=no
 After=sysinit.target
 
 [Service]
 Type=simple
-EnvironmentFile=/etc/default/sleepi2
-Environment=GPIO_PATH=/sys/class/gpio/gpio${HEARTBEAT_PIN}
-ExecStartPre=/bin/sh -c '[ -e ${GPIO_PATH}/direction ] || { echo ${HEARTBEAT_PIN} > /sys/class/gpio/export; sleep 1; } && echo "out" > ${GPIO_PATH}/direction'
-ExecStart=/bin/sh -c 'while true; do for i in `seq 2`; do echo 0 > ${GPIO_PATH}/value; sleep 0.1; echo 1 > ${GPIO_PATH}/value; sleep 0.1; done; sleep 0.6; done'
+Environment=LED_PATH=/sys/class/leds/sleepi:led0
+ExecStart=/bin/sh -c 'while true; do for i in `seq 2`; do echo 255 > ${LED_PATH}/brightness; sleep 0.1; echo 0 > ${LED_PATH}/brightness; sleep 0.1; done; sleep 0.6; done'
 TimeoutSec=90s
 Restart=always
 

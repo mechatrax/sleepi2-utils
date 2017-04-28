@@ -10,7 +10,7 @@ Homepage: http://www.mechatrax.com/
 
 Package: sleepi2-utils
 Architecture: all
-Depends: ${misc:Depends}, sleepi2-firmware (>= 0.1), python3-sleepi, python3
+Depends: ${misc:Depends}, sleepi2-firmware (>= 1.1), python3-sleepi, python3
 Conflicts: fake-hwclock, sleepi-utils
 Description: Utilities for slee-Pi 2
  This package contains command utilities to control slee-Pi 2.
