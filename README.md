@@ -22,14 +22,14 @@ slee-Pi 2 を操作するためのツール類を提供します。
 
     + 2017/03/17 19:00:00 に設定する場合
       ```
-      sleepictl --set alarm "2017/03/17 19:00:00"
+      sleepi2alarm --set "2017/03/17 19:00:00"
       ```
       日時を指定してアラームを設定できます。  
       時刻のみの指定も可能です。
 
     + 五分後に設定する場合  
       ``` bash
-      sleepictl --set alarm "+5min"
+      sleepi2alarm --set "+5min"
       ```
       相対値を指定してアラームを設定できます。  
       year, month, day, hour, min, sec での指定が可能です。
