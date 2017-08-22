@@ -1,3 +1,9 @@
+sleepi2-utils (1.0.2) unstable; urgency=low
+
+  * Fix url typo
+
+ -- Masahiro Honda <honda@mechatrax.com>  Tue, 22 Aug 2017 19:14:25 +0900
+
 sleepi2-utils (1.0.1) unstable; urgency=medium
 
   * Modify sleepi2-heartbeat service
