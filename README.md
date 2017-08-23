@@ -6,7 +6,11 @@ slee-Pi 2 を操作するためのツール類を提供します。
 ## 提供ファイル
 次のファイルがパッケージに含まれています。
 
-* /usr/sbin/sleepi2alarm
+* /usr/sbin/sleepi2alarm  
+  RTC のアラームを操作するスクリプトです。  
+  /sys/class/rtc/${RTC_DEVICE}/wakealarm にアクセスします。  
+  RTC_DEVICE の値は /etc/default/sleepi2 に記述します。
+  
   + --get, -g  
     アラーム時刻を取得します。  
     未設定の場合は空の文字列を返します。  
@@ -32,7 +36,9 @@ slee-Pi 2 を操作するためのツール類を提供します。
       sleepi2alarm --set "+5min"
       ```
       相対値を指定してアラームを設定できます。  
-      year, month, day, hour, min, sec での指定が可能です。
+      year, month, day, hour, min, sec での指定が可能です。  
+      
+    詳細は https://www.kernel.org/doc/Documentation/rtc.txt の wakealarm の項目を参照してください。
 
   + --clear, -c  
     アラーム設定を解除します。
