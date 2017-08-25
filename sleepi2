@@ -35,13 +35,6 @@ SYSTOHC=yes
 I2C_ADDRESS=0x69
 
 #
-# Heartbeat GPIO pin
-#
-# HEARTBEAT_PIN: 5(default) or 24
-#
-HEARTBEAT_PIN=5
-
-#
 # Reboot if the heartbeat is not received more than HEARTBEAT_TIMEOUT seconds
 #
 # HEARTBEAT_TIMEOUT=0 : disabled
