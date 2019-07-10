@@ -7,6 +7,7 @@ Conflicts=sleepi2-monitor.service
 
 [Service]
 Type=oneshot
+Environment=LED_PATH=/sys/class/leds/sleepi:led0
 EnvironmentFile=/etc/default/sleepi2
 ExecStart=/usr/lib/sleepi2-utils/stop.sh
 TimeoutSec=30s

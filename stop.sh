@@ -11,3 +11,4 @@ fi
 sleepi2ctl --set timeout $SHUTDOWN_DELAY
 sleepi2ctl --set wakeup-delay $WAKEUP_DELAY
 
+echo heartbeat > ${LED_PATH}/trigger

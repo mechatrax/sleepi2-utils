@@ -3,6 +3,7 @@
 ./85-sleepi2-utils.rules /lib/udev/rules.d/
 ./timeoutpid.sh /usr/lib/sleepi2-utils/
 ./systohc.sh /usr/lib/sleepi2-utils/
+./heartbeat.sh /usr/lib/sleepi2-utils/
 ./hctosys.sh /usr/lib/sleepi2-utils/
 ./start.sh /usr/lib/sleepi2-utils/
 ./stop.sh /usr/lib/sleepi2-utils/

@@ -5,10 +5,10 @@ After=sysinit.target
 
 [Service]
 Type=simple
+Nice=19
+OOMScoreAdjust=1000
 Environment=LED_PATH=/sys/class/leds/sleepi:led0
-ExecStart=/bin/sh -c 'while true; do for i in `seq 2`; do echo 255 > ${LED_PATH}/brightness; sleep 0.1; echo 0 > ${LED_PATH}/brightness; sleep 0.1; done; sleep 0.6; done'
-TimeoutSec=90s
-Restart=always
+ExecStart=/usr/lib/sleepi2-utils/heartbeat.sh
 
 [Install]
 WantedBy=sysinit.target

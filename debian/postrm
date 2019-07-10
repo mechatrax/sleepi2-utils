@@ -1,3 +1,10 @@
+#!/bin/sh
+# postrm script for sleepi2-utils
+#
+# see: dh_installdeb(1)
+
+set -e
+
 if [ -d /run/systemd/system ] ; then
 	systemctl --system daemon-reload >/dev/null || true
 fi
@@ -15,3 +22,5 @@ if [ "$1" = "purge" ]; then
 fi
 
 #DEBHELPER#
+
+exit 0
