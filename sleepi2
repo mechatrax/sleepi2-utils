@@ -56,7 +56,7 @@ RETRY_BOOT=1
 # SHUTDOWN_DELAY=0 : disabled
 # SHUTDOWN_DELAY=N : N[1..255] seconds
 #
-SHUTDOWN_DELAY=5
+SHUTDOWN_DELAY=10
 
 #
 # Time to wait for boot

@@ -9,6 +9,7 @@ Nice=19
 OOMScoreAdjust=1000
 Environment=LED_PATH=/sys/class/leds/sleepi:led0
 ExecStart=/usr/lib/sleepi2-utils/heartbeat.sh
+ExecStopPost=/bin/sh -c "/bin/echo 0 > ${LED_PATH}/brightness"
 
 [Install]
 WantedBy=sysinit.target

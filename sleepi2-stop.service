@@ -3,7 +3,7 @@ Description=sleepi2-utils postprocess
 DefaultDependencies=no
 After=sleepi2-start.service
 Before=shutdown.target sleepi2-systohc.service
-Conflicts=sleepi2-monitor.service
+Conflicts=sleepi2-monitor.service sleepi2-heartbeat.service
 
 [Service]
 Type=oneshot

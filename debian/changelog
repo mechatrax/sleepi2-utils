@@ -1,3 +1,10 @@
+sleepi2-utils (1.1.2) buster; urgency=medium
+
+  * sleepi2-heartbeat.service: Turn off LED when service is stopped
+  * sleepi2-stop.service: Add sleepi2-heartbeat.service to Conflicts
+
+ -- Masahiro Honda <honda@mechatrax.com>  Tue, 16 Jul 2019 17:34:43 +0900
+
 sleepi2-utils (1.1.1) buster; urgency=medium
 
   * Add heartbeat.sh
