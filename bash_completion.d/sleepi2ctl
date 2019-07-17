@@ -1,0 +1,70 @@
+_sleepi2ctl_gen_prms()
+{
+	local prms_get=(
+		'extin-count'
+		'extin-powerdown'
+		'extin-trigger'
+		'extout'
+		'restart'
+		'ri-trigger'
+		'sleep'
+		'switch-count'
+		'timeout'
+		'voltage'
+		'wakeup-delay'
+		'wakeup-flag'
+		'wakeup-status'
+	)
+	local prms_set=(
+		'extin-powerdown'
+		'extin-trigger'
+		'extout'
+		'restart'
+		'ri-trigger'
+		'sleep'
+		'timeout'
+		'wakeup-delay'
+	)
+	case $prev in
+	-g|--get)
+		COMPREPLY=( $(compgen -W '${prms_get[@]}' -- $cur) )
+		;;
+	-s|--set)
+		COMPREPLY=( $(compgen -W '${prms_set[@]}' -- $cur) )
+		;;
+	esac
+}
+
+_sleepi2ctl_gen_cmds()
+{
+	local cmds=(
+		'--get'
+		'--set'
+		'--version'
+		'--help'
+	)
+	COMPREPLY=( $(compgen -W '${cmds[@]}' -- $cur) )
+}
+
+_sleepi2ctl()
+{
+	local cur prev words cword
+	_init_completion || return
+
+	if [ $cword -eq 1 ]
+	then
+		_sleepi2ctl_gen_cmds
+		return
+	fi
+
+	case $prev in
+	-h|--help|-v|--version)
+		;;
+	-*)
+		_sleepi2ctl_gen_prms
+		;;
+	esac
+} &&
+
+complete -F _sleepi2ctl sleepi2ctl
+

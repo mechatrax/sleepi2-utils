@@ -2,8 +2,8 @@ Source: sleepi2-utils
 Section: admin
 Priority: optional
 Maintainer: Masahiro Honda <honda@mechatrax.com>
-Build-Depends: debhelper (>= 9), dh-systemd(>= 1.5)
-Standards-Version: 3.9.8
+Build-Depends: debhelper (>= 12), bash-completion
+Standards-Version: 4.3.0
 Vcs-Git: https://github.com/mechatrax/sleepi2-utils.git
 Vcs-browser: https://github.com/mechatrax/sleepi2-utils
 Homepage: https://www.mechatrax.com/

@@ -1,24 +1,11 @@
 #!/usr/bin/make -f
 # -*- makefile -*-
-# Sample debian/rules that uses debhelper.
-# This file was originally written by Joey Hess and Craig Small.
-# As a special exception, when this file is copied by dh-make into a
-# dh-make output file, you may use that output file without restriction.
-# This special exception was added by Craig Small in version 0.37 of dh-make.
 
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
 %:
-	dh $@ --with systemd
+	dh $@ --with bash-completion
 
-override_dh_systemd_enable:
-	dh_systemd_enable sleepi2-start.service
-	dh_systemd_enable sleepi2-stop.service
-	dh_systemd_enable sleepi2-restart.service
-	dh_systemd_enable sleepi2-systohc.service
-	dh_systemd_enable sleepi2-heartbeat.service
-
-override_dh_systemd_start:
-	dh_systemd_start --no-start
-
+override_dh_installsystemd:
+	dh_installsystemd --no-start

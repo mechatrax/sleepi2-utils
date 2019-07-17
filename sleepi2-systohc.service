@@ -1,5 +1,5 @@
 [Unit]
-Description=Synchronise system clock to sleepi2
+Description=Synchronize system clock to sleepi2
 DefaultDependencies=no
 Requires=dev-rtc.device
 After=sleepi2-hctosys.service

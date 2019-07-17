@@ -40,7 +40,7 @@ I2C_ADDRESS=0x69
 # HEARTBEAT_TIMEOUT=0 : disabled
 # HEARTBEAT_TIMEOUT=N : N[1..255] seconds
 #
-HEARTBEAT_TIMEOUT=20
+HEARTBEAT_TIMEOUT=60
 
 #
 # Retry on boot failure
@@ -64,7 +64,7 @@ SHUTDOWN_DELAY=10
 # WAKEUP_DELAY=0 : disabled
 # WAKEUP_DELAY=N : N[1..255] seconds
 #
-WAKEUP_DELAY=40
+WAKEUP_DELAY=90
 
 #
 # Forced shutdown by external input 
