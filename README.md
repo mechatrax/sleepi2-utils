@@ -34,7 +34,7 @@ RTC_DEVICE の値は /etc/default/sleepi2 に記述します。
 
   - 五分後に設定する場合  
     ``` bash
-    sleepi2alarm --set "*5min"
+    sleepi2alarm --set "+5min"
     ```
     相対値を指定してアラームを設定できます。  
     year, month, day, hour, min, sec での指定が可能です。  
