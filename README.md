@@ -22,8 +22,7 @@ RTC_DEVICE の値は /etc/default/sleepi2 に記述します。
 
   \<STRING\> : 時刻を指定します。
 
-  指定可能な文字列のフォーマットは GNU date コマンドに準拠しています。  
-  次に例を示します。
+  以下に例を示します。
 
   - 2017/03/17 19:00:00 に設定する場合
     ```
@@ -37,7 +36,17 @@ RTC_DEVICE の値は /etc/default/sleepi2 に記述します。
     sleepi2alarm --set "+5min"
     ```
     相対値を指定してアラームを設定できます。  
-    year, month, day, hour, min, sec での指定が可能です。  
+    year, month, day, hour, min, sec 等の指定が可能です。  
+
+  - 翌日午前九時に設定する場合  
+    ``` bash
+    sleepi2alarm --set "tomorrow 9:00"
+    ```
+    相対値と絶対値を組み合わせてアラームを設定することもできます。
+
+  以上の例で示した文字列のフォーマットは GNU date コマンドに準拠しています。  
+  フォーマットの詳細については次の URL を参照してください。  
+  https://www.gnu.org/software/coreutils/manual/html_node/Date-input-formats.html
 
 * --clear, -c  
   アラーム設定を解除します。
